@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    transition: 0.2s;  
+}
+
+.keyboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0 10px;
+}
+
+.keyboard-wrapper {
+    width: 710px;
+    background-color: #e7e7e7;
+    position: relative;
+    overflow: hidden;
+}
+
+.row {
+    display: flex;
+    clear: both;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.keyboard-btn {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0px 5px 6px;
+    transition: 0.2s;
+}
+
+.backspace {
+    width: 100px;
+}
+
+.tab {
+    min-width: 50px;
+}
+
+.del {
+    width: 44px;
+}
+
+.capslock {
+    width: 100px;
+}
+
+.enter {
+    width: 86px;
+}
+
+.shift {
+    width: 100px;
+}
+
+.shift:last-child {
+    width: 86px;
+}
+
+.space {
+    width: 330px;
+}
