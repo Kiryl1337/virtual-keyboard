@@ -9,9 +9,19 @@ body {
     transition: 0.2s;  
 }
 
+textarea {
+    display: block;
+    width: 720px;
+    height: 200px;
+    margin: 10px auto 10px;
+    padding: 10px;
+    font-size: 18px;
+    color: #444444;
+    overflow: auto;
+}
+
 .keyboard {
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 100vh;

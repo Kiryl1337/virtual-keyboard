@@ -67,6 +67,9 @@ const keys = {
     }
 }
 
+let textarea = document.createElement('textarea')
+document.body.append(textarea)
+
 let keyboard = document.createElement('div')
 keyboard.className = 'keyboard'
 document.body.append(keyboard)
