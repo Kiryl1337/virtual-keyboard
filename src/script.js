@@ -67,8 +67,8 @@ const keys = {
   },
 };
 
-const textarea = document.createElement("textarea");
-document.body.append(textarea);
+const textArea = document.createElement("textarea");
+document.body.append(textArea);
 
 const keyboard = document.createElement("div");
 keyboard.className = "keyboard";
@@ -94,6 +94,7 @@ const row1 = createRow();
 for (let i = 0; i < 14; i += 1) {
   const keyboardBtn = document.createElement("div");
   keyboardBtn.className = "keyboard-btn";
+  keyboardBtn.dataset.keyCode = englishKeys[i][1];
   if (englishKeys[i][0] === "Backspace") {
     keyboardBtn.classList.add("backspace");
   }
@@ -104,6 +105,7 @@ const row2 = createRow();
 for (let i = 14; i < 29; i += 1) {
   const keyboardBtn = document.createElement("div");
   keyboardBtn.className = "keyboard-btn";
+  keyboardBtn.dataset.keyCode = englishKeys[i][1];
   if (englishKeys[i][0] === "Tab") {
     keyboardBtn.classList.add("tab");
   }
@@ -117,6 +119,7 @@ const row3 = createRow();
 for (let i = 29; i < 42; i += 1) {
   const keyboardBtn = document.createElement("div");
   keyboardBtn.className = "keyboard-btn";
+  keyboardBtn.dataset.keyCode = englishKeys[i][1];
   if (englishKeys[i][0] === "Caps Lock") {
     keyboardBtn.classList.add("capslock");
   }
@@ -130,6 +133,7 @@ const row4 = createRow();
 for (let i = 42; i < 55; i += 1) {
   const keyboardBtn = document.createElement("div");
   keyboardBtn.className = "keyboard-btn";
+  keyboardBtn.dataset.keyCode = englishKeys[i][1];
   if (englishKeys[i][0].trim() === "Shift") {
     keyboardBtn.classList.add("shift");
   }
@@ -144,6 +148,7 @@ const row5 = createRow();
 for (let i = 55; i < 64; i += 1) {
   const keyboardBtn = document.createElement("div");
   keyboardBtn.className = "keyboard-btn";
+  keyboardBtn.dataset.keyCode = englishKeys[i][1];
   switch (englishKeys[i][0].trim()) {
     case "Ctrl": keyboardBtn.classList.add("ctrl");
       break;
@@ -164,3 +169,46 @@ for (let i = 55; i < 64; i += 1) {
   row5.append(keyboardBtn);
   keyboardBtn.textContent = `${englishKeys[i][0]}`;
 }
+let cursorPos = 0;
+const textInput = (value) => {
+  textArea.value = textArea.value.slice(0, cursorPos) + value
+  + textArea.value.slice(cursorPos, textArea.value.length);
+  cursorPos += 1;
+};
+
+const inputText = (event) => {
+  if (event.classList.contains("keyboard-btn")) {
+    textInput(event.textContent);
+  }
+};
+
+const clickAction = (event, action) => {
+  if (action === "down") {
+    event.classList.add("active");
+  } else if (action === "up") {
+    event.classList.remove("active");
+  }
+  textArea.selectionEnd = textArea.selectionStart = cursorPos;
+  textArea.focus();
+};
+const listButtons = Array.from(document.querySelectorAll("[data-key-code]"));
+window.addEventListener("keydown", (event) => {
+  event.preventDefault();
+  listButtons.find(el => {
+    if (+el.dataset.keyCode === event.keyCode) {
+      clickAction(el, "down");
+      inputText(el);
+      return true;
+    }
+  })
+});
+
+window.addEventListener("keyup", (event) => {
+  event.preventDefault();
+  listButtons.find(el => {
+    if (+el.dataset.keyCode === event.keyCode) {
+      clickAction(el, "up");
+      return true;
+    }
+  })
+});
