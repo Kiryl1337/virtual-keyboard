@@ -170,7 +170,7 @@ for (let i = 55; i < 64; i += 1) {
   keyboardBtn.textContent = `${englishKeys[i][0]}`;
 }
 let cursorPos = 0;
-const textInput = (value) => {
+const textAreaInput = (value) => {
   textArea.value = textArea.value.slice(0, cursorPos) + value
   + textArea.value.slice(cursorPos, textArea.value.length);
   cursorPos += 1;
@@ -178,7 +178,7 @@ const textInput = (value) => {
 
 const inputText = (event) => {
   if (event.classList.contains("keyboard-btn")) {
-    textInput(event.textContent);
+    textAreaInput(event.textContent);
   }
 };
 
@@ -211,4 +211,25 @@ window.addEventListener("keyup", (event) => {
       return true;
     }
   })
+});
+
+keyboard.addEventListener("mousedown", (event) => {
+  event.path.find(item => {
+    if (item instanceof Element) {
+      if (item.classList.contains("keyboard-btn")) {
+        textAreaInput(event.target.textContent);
+        return true;
+      }
+    }
+  });
+
+  if (!event.target.classList.contains("keyboard-btn")) return;
+  clickAction(event.target, "down");
+});
+
+keyboard.addEventListener("mouseup", (event) => {
+  textArea.selectionEnd = textArea.selectionStart = cursorPos;
+
+  if (!event.target.classList.contains("keyboard-btn")) return;
+  clickAction(event.target, "up");
 });
