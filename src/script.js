@@ -185,6 +185,7 @@ for (let i = 55; i < 64; i += 1) {
 }
 let cursorPos = 0;
 let isCapsLock = false;
+let isShift = false
 
 const textAreaInput = (value) => {
   textArea.value = textArea.value.slice(0, cursorPos) + value
@@ -229,6 +230,25 @@ const clickCapsLock = (_, action) => {
   }
 };
 
+const clickShift = (_, action) => {
+  if (action === "down") {
+    listButtons.forEach(item => {
+      if (item.classList.contains("keyboard-btn")
+      && !item.classList.contains("not-common-btn")) {
+        item.textContent = item.textContent.toUpperCase();
+      }
+    });
+  }
+  if (action === "up") {
+    listButtons.forEach(item => {
+      if (item.classList.contains("keyboard-btn")
+      && !item.classList.contains("not-common-btn")) {
+        item.textContent = item.textContent.toLowerCase();
+      }
+    });
+  }
+};
+
 window.addEventListener("keydown", (event) => {
   event.preventDefault();
   if (event.key === "CapsLock") {
@@ -238,6 +258,14 @@ window.addEventListener("keydown", (event) => {
     } else {
       clickCapsLock(event.target, "up");
     }
+  }
+  if (event.key === "Shift") {
+    if (!isCapsLock) {
+      clickShift(event.target, "down");
+    } else {
+      clickShift(event.target, "up");
+    }
+    isShift = true;
   }
   if (event.key === "Enter") {
     textAreaInput("\r\n");
@@ -272,6 +300,14 @@ window.addEventListener("keydown", (event) => {
 
 window.addEventListener("keyup", (event) => {
   event.preventDefault();
+  if (event.key === "Shift") {
+    if (!isCapsLock) {
+      clickShift(event.target, "up");
+    } else {
+      clickShift(event.target, "down");
+    }
+    isShift = false;
+  }
   listButtons.find((el) => {
     if (+el.dataset.keyCode === event.keyCode) {
       clickAction(el, "up");
@@ -288,6 +324,14 @@ keyboard.addEventListener("mousedown", (event) => {
     } else {
       clickCapsLock(event.target, "up");
     }
+  }
+  if (event.target.classList.contains("shift")) {
+    if (!isCapsLock) {
+      clickShift(event.target, "down");
+    } else {
+      clickShift(event.target, "up");
+    }
+    isShift = true;
   }
   if (event.target.classList.contains("enter")) {
     textAreaInput("\r\n");
@@ -321,7 +365,14 @@ keyboard.addEventListener("mousedown", (event) => {
 
 keyboard.addEventListener("mouseup", (event) => {
   textArea.selectionEnd = textArea.selectionStart = cursorPos;
-
+  if (event.target.classList.contains("shift")) {
+    if (!isCapsLock) {
+      clickShift(event.target, "up");
+    } else {
+      clickShift(event.target, "down");
+    }
+    isShift = false;
+}
   if (!event.target.classList.contains("keyboard-btn")) return;
   clickAction(event.target, "up");
 });
