@@ -351,6 +351,46 @@ const clickShift = (_, action) => {
   }
 };
 
+let changeLang = (side) => {
+  if (isAlt && isShift) {
+    if (currentLang === "en") {
+      currentLang = "ru";
+      keysLang = Object.entries(keys[currentLang]);
+    } else {
+      currentLang = "en";
+      keysLang = Object.entries(keys[currentLang]);
+    }
+
+    listButtons.find(item => {
+      if (+item.dataset.keyCode === 18) {
+        clickAction(item, "down");
+        return true;
+      }
+    });
+
+    if (side === "right") {
+      listButtons.reverse();
+      listButtons.find(item => {
+        if (+item.dataset.keyCode === 16) {
+          clickAction(item, "down");
+          return true;
+        }
+      });
+      listButtons.reverse();
+      return;
+    }
+
+    listButtons.find(item => {
+      if (+item.dataset.keyCode === 16) {
+        clickAction(item, "down");
+        return true;
+      }
+    });
+  }
+
+  localStorage.setItem("lang", currentLang);
+};
+
 window.addEventListener("keydown", (event) => {
   event.preventDefault();
   if (event.key === "CapsLock") {
@@ -368,6 +408,11 @@ window.addEventListener("keydown", (event) => {
       clickShift(event.target, "up");
     }
     isShift = true;
+    if (event.code === "ShiftRight") {
+      changeLang("right");
+    } else {
+      changeLang();
+    }
   }
   if (event.key === "Enter") {
     textAreaInput("\r\n");
@@ -403,13 +448,25 @@ window.addEventListener("keydown", (event) => {
     }
   }
 
-  listButtons.find((el) => {
-    if (+el.dataset.keyCode === event.keyCode) {
-      clickAction(el, "down");
-      inputText(el);
-      return true;
-    }
-  })
+  if (event.code === "AltRight" || event.code === "ControlRight"
+  || event.code === "ShiftRight") {
+    listButtons.reverse().find((item) => {
+      if (+item.dataset.keyCode === event.keyCode) {
+        clickAction(item, "down");
+        inputText(item);
+        return true;
+      }
+    });
+    listButtons.reverse();
+  } else {
+    listButtons.find((item) => {
+      if (+item.dataset.keyCode === event.keyCode) {
+        clickAction(item, "down");
+        inputText(item);
+        return true;
+      }
+    });
+}
 });
 
 window.addEventListener("keyup", (event) => {
@@ -426,12 +483,23 @@ window.addEventListener("keyup", (event) => {
     clickShift(event.target, "up");
     isAlt = false;
   }
-  listButtons.find((el) => {
-    if (+el.dataset.keyCode === event.keyCode) {
-      clickAction(el, "up");
-      return true;
-    }
-  })
+  if (event.code === "AltRight" || event.code === "ControlRight"
+  || event.code === "ShiftRight") {
+    listButtons.reverse().find((item) => {
+      if (+item.dataset.keyCode === event.keyCode) {
+        clickAction(item, "up");
+        return true;
+      }
+    });
+    listButtons.reverse();
+  } else {
+    listButtons.find((item) => {
+      if (+item.dataset.keyCode === event.keyCode) {
+        clickAction(item, "up");
+        return true;
+      }
+    });
+  }
 });
 
 keyboard.addEventListener("mousedown", (event) => {
@@ -513,43 +581,3 @@ keyboard.addEventListener("mouseup", (event) => {
   if (!event.target.classList.contains("keyboard-btn")) return;
   clickAction(event.target, "up");
 });
-
-let changeLang = (side) => {
-  if (isAlt && isShift) {
-    if (currentLang === "en") {
-      currentLang = "ru";
-      keysLang = Object.entries(keys[currentLang]);
-    } else {
-      currentLang = "en";
-      keysLang = Object.entries(keys[currentLang]);
-    }
-
-    listButtons.find(item => {
-      if (+item.dataset.keyCode === 18) {
-        clickAction(item, "down");
-        return true;
-      }
-    });
-
-    if (side === "right") {
-      listButtons.reverse();
-      listButtons.find(item => {
-        if (+item.dataset.keyCode === 16) {
-          clickAction(item, "down");
-          return true;
-        }
-      });
-      listButtons.reverse();
-      return;
-    }
-
-    listButtons.find(item => {
-      if (+item.dataset.keyCode === 16) {
-        clickAction(item, "down");
-        return true;
-      }
-    });
-  }
-
-  localStorage.setItem("lang", currentLang);
-};
