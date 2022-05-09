@@ -1,0 +1,106 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    transition: 0.2s;  
+}
+
+textarea {
+    display: block;
+    width: 720px;
+    height: 200px;
+    margin: 10px auto 10px;
+    padding: 10px;
+    font-size: 18px;
+    color: #444444;
+    overflow: auto;
+}
+
+.keyboard {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 10px;
+}
+
+.keyboard-wrapper {
+    width: 710px;
+    background-color: #e7e7e7;
+    position: relative;
+    overflow: hidden;
+}
+
+.row {
+    display: flex;
+    clear: both;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.keyboard-btn {
+    width: 40px;
+    height: 40px;
+    color: #ffffff;
+    background: #444444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0px 5px 6px;
+    transition: 0.2s;
+}
+
+.keyboard-btn:hover {
+    background-color: #79aa89;
+    cursor: pointer;
+}
+
+.keyboard-btn.active {
+    background-color: #2cfd72;
+    border-radius: 50px;
+}
+
+.backspace {
+    width: 100px;
+}
+
+.tab {
+    min-width: 50px;
+}
+
+.del {
+    width: 44px;
+}
+
+.capslock {
+    width: 100px;
+}
+
+.enter {
+    width: 86px;
+}
+
+.shift {
+    width: 100px;
+}
+
+.shift:last-child {
+    width: 86px;
+}
+
+.space {
+    width: 330px;
+}
+
+.hidden {
+    display: none;
+}
+
+.description, .language {
+    margin: 10px auto;
+    text-align: center;
+}
