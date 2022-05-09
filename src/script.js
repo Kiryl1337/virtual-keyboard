@@ -53,16 +53,16 @@ const keys = {
     ", <": 188,
     ". >": 190,
     "/ ?": 191,
-    "Up arrow": 38,
+    "↑": 38,
     "Shift ": 16,
     Ctrl: 17,
     Win: 91,
     Alt: 18,
     Space: 32,
     "Alt ": 18,
-    "Left arrow": 37,
-    "Down arrow": 40,
-    "Right arrow": 39,
+    "←": 37,
+    "↓": 40,
+    "→": 39,
     "Ctrl ": 17,
   },
 };
@@ -143,7 +143,7 @@ for (let i = 42; i < 55; i += 1) {
     keyboardBtn.classList.add("not-common-btn");
     keyboardBtn.classList.add("shift");
   }
-  if (englishKeys[i][0] === "Up arrow") {
+  if (englishKeys[i][0] === "↑") {
     keyboardBtn.classList.add("not-common-btn");
     keyboardBtn.classList.add("up-arrow");
   }
@@ -169,13 +169,13 @@ for (let i = 55; i < 64; i += 1) {
     case "Space": keyboardBtn.classList.add("space");
       keyboardBtn.classList.add("not-common-btn");
       break;
-    case "Left arrow": keyboardBtn.classList.add("left-arrow");
+    case "←": keyboardBtn.classList.add("left-arrow");
       keyboardBtn.classList.add("not-common-btn");
       break;
-    case "Down arrow": keyboardBtn.classList.add("down-arrow");
+    case "↓": keyboardBtn.classList.add("down-arrow");
       keyboardBtn.classList.add("not-common-btn");
       break;
-    case "Right arrow": keyboardBtn.classList.add("right-arrow");
+    case "→": keyboardBtn.classList.add("right-arrow");
       keyboardBtn.classList.add("not-common-btn");
       break;
     default: keyboardBtn.classList.add("keyboard-btn");
