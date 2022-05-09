@@ -24,7 +24,6 @@ textarea {
     display: flex;
     align-items: center;
     flex-direction: column;
-    height: 100vh;
     margin: 0 10px;
 }
 
@@ -99,4 +98,9 @@ textarea {
 
 .hidden {
     display: none;
+}
+
+.description, .language {
+    margin: 10px auto;
+    text-align: center;
 }

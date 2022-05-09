@@ -153,7 +153,8 @@ function createRow() {
   keyboardKeys.append(row);
   return row;
 }
-let currentLang = localStorage.getItem("lang") || "en";
+let lang;
+let currentLang = lang || "en";
 let keysLang = Object.entries(keys[currentLang]);
 
 const row1 = createRow();
@@ -280,7 +281,8 @@ const textAreaInput = (value) => {
 };
 
 const inputText = (event) => {
-  if (event.classList.contains("not-common-btn")) {
+  if (event.classList.contains("not-common-btn") && !event.classList.contains("down-arrow")
+  && !event.classList.contains("left-arrow") && !event.classList.contains("right-arrow") && !event.classList.contains("up-arrow")) {
     return;
   }
   if (event.classList.contains("double-view-btn")) {
@@ -351,7 +353,7 @@ const clickShift = (_, action) => {
   }
 };
 
-let changeLang = (side) => {
+const changeLang = (side) => {
   if (isAlt && isShift) {
     if (currentLang === "en") {
       currentLang = "ru";
@@ -388,7 +390,7 @@ let changeLang = (side) => {
     });
   }
 
-  localStorage.setItem("lang", currentLang);
+  lang = currentLang;
 };
 
 window.addEventListener("keydown", (event) => {
@@ -581,3 +583,13 @@ keyboard.addEventListener("mouseup", (event) => {
   if (!event.target.classList.contains("keyboard-btn")) return;
   clickAction(event.target, "up");
 });
+
+const description = document.createElement("p");
+description.className = "description";
+description.textContent = "Клавиатура создана в операционной системе Windows"
+document.body.append(description);
+
+const language = document.createElement("p");
+language.className = "language";
+language.textContent = "Для переключения языка комбинация: левыe Shift + Alt"
+document.body.append(language);
