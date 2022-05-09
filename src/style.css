@@ -96,3 +96,7 @@ textarea {
 .space {
     width: 330px;
 }
+
+.hidden {
+    display: none;
+}

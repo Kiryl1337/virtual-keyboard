@@ -188,6 +188,7 @@ for (let i = 0; i < keyboardButtons.length; i += 1) {
   if (keyboardButtons[i].textContent.trim().split(" ").length === 2 && keyboardButtons[i].textContent !== "Caps Lock") {
     const firstViewBtn = document.createElement("div");
     firstViewBtn.className = "first-view-btn";
+    firstViewBtn.classList.add("hidden");
     firstViewBtn.textContent = keyboardButtons[i].textContent.split(' ')[1];
 
     const secondViewBtn = document.createElement("div");
@@ -215,6 +216,14 @@ const inputText = (event) => {
   if (event.classList.contains("not-common-btn")) {
     return;
   }
+  if (event.classList.contains("double-view-btn")) {
+    if (isShift) {
+      textAreaInput(event.firstChild.textContent);
+    } else {
+      textAreaInput(event.lastChild.textContent);
+    }
+    return;
+  }
   if (event.classList.contains("keyboard-btn")) {
     textAreaInput(event.textContent);
   }
@@ -234,14 +243,14 @@ const listButtons = Array.from(document.querySelectorAll("[data-key-code]"));
 const clickCapsLock = (_, action) => {
   if (action === "down") {
     listButtons.forEach((item) => {
-      if (item.classList.contains("keyboard-btn") && !item.classList.contains("not-common-btn")) {
+      if (item.classList.contains("keyboard-btn") && !item.classList.contains("not-common-btn") && !item.classList.contains("double-view-btn")) {
         item.textContent = item.textContent.toUpperCase();
       }
     });
   }
   if (action === "up") {
     listButtons.forEach((item) => {
-      if (item.classList.contains("keyboard-btn") && !item.classList.contains("not-common-btn")) {
+      if (item.classList.contains("keyboard-btn") && !item.classList.contains("not-common-btn") && !item.classList.contains("double-view-btn")) {
         item.textContent = item.textContent.toLowerCase();
       }
     });
@@ -252,16 +261,24 @@ const clickShift = (_, action) => {
   if (action === "down") {
     listButtons.forEach(item => {
       if (item.classList.contains("keyboard-btn")
-      && !item.classList.contains("not-common-btn")) {
+      && !item.classList.contains("not-common-btn") && !item.classList.contains("double-view-btn")) {
         item.textContent = item.textContent.toUpperCase();
+      }
+      if (item.classList.contains("double-view-btn")) {
+        item.firstChild.classList.remove("hidden");
+        item.lastChild.classList.add("hidden");
       }
     });
   }
   if (action === "up") {
     listButtons.forEach(item => {
       if (item.classList.contains("keyboard-btn")
-      && !item.classList.contains("not-common-btn")) {
+      && !item.classList.contains("not-common-btn") && !item.classList.contains("double-view-btn")) {
         item.textContent = item.textContent.toLowerCase();
+      }
+      if (item.classList.contains("double-view-btn")) {
+        item.firstChild.classList.add("hidden");
+        item.lastChild.classList.remove("hidden");
       }
     });
   }
@@ -370,7 +387,14 @@ keyboard.addEventListener("mousedown", (event) => {
   if (!event.target.classList.contains("not-common-btn")) {
     event.path.find((item) => {
       if (item instanceof Element) {
-        if (item.classList.contains("keyboard-btn")) {
+        if (item.classList.contains("double-view-btn")) {
+          if (isShift) {
+            textAreaInput(item.firstChild.textContent);
+          } else {
+            textAreaInput(item.lastChild.textContent);
+          }
+          return true;
+        } if (item.classList.contains("keyboard-btn")) {
           textAreaInput(event.target.textContent);
           return true;
         }
