@@ -235,7 +235,7 @@ window.addEventListener("keydown", (event) => {
     } else {
       clickCapsLock(event.target, "up");
     }
-}
+  }
   listButtons.find((el) => {
     if (+el.dataset.keyCode === event.keyCode) {
       clickAction(el, "down");
@@ -267,6 +267,15 @@ keyboard.addEventListener("mousedown", (event) => {
 
   if (!event.target.classList.contains("keyboard-btn")) return;
   clickAction(event.target, "down");
+
+  if (event.target.classList.contains("capslock")) {
+    isCapsLock = !isCapsLock;
+    if (isCapsLock) {
+      clickCapsLock(event.target, "down");
+    } else {
+      clickCapsLock(event.target, "up");
+    }
+}
 });
 
 keyboard.addEventListener("mouseup", (event) => {
