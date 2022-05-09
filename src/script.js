@@ -193,6 +193,9 @@ const textAreaInput = (value) => {
 };
 
 const inputText = (event) => {
+  if (event.classList.contains("not-common-btn")) {
+    return;
+  }
   if (event.classList.contains("keyboard-btn")) {
     textAreaInput(event.textContent);
   }
@@ -244,6 +247,20 @@ window.addEventListener("keydown", (event) => {
     textAreaInput("  ");
     cursorPos += 1;
   }
+
+  if (event.key === "Backspace") {
+    if (cursorPos === 0) {
+      return;
+    }
+    textArea.value = textArea.value.slice(0, cursorPos - 1)
+    + textArea.value.slice(cursorPos, textArea.value.length);
+    cursorPos -= 1;
+  }
+
+  if (event.keyCode === 32) {
+    textAreaInput(" ");
+  }
+
   listButtons.find((el) => {
     if (+el.dataset.keyCode === event.keyCode) {
       clickAction(el, "down");
@@ -251,7 +268,6 @@ window.addEventListener("keydown", (event) => {
       return true;
     }
   })
- 
 });
 
 window.addEventListener("keyup", (event) => {
@@ -265,18 +281,6 @@ window.addEventListener("keyup", (event) => {
 });
 
 keyboard.addEventListener("mousedown", (event) => {
-  event.path.find((item) => {
-    if (item instanceof Element) {
-      if (item.classList.contains("keyboard-btn")) {
-        textAreaInput(event.target.textContent);
-        return true;
-      }
-    }
-  });
-
-  if (!event.target.classList.contains("keyboard-btn")) return;
-  clickAction(event.target, "down");
-
   if (event.target.classList.contains("capslock")) {
     isCapsLock = !isCapsLock;
     if (isCapsLock) {
@@ -285,7 +289,6 @@ keyboard.addEventListener("mousedown", (event) => {
       clickCapsLock(event.target, "up");
     }
   }
-
   if (event.target.classList.contains("enter")) {
     textAreaInput("\r\n");
   }
@@ -293,6 +296,27 @@ keyboard.addEventListener("mousedown", (event) => {
     textAreaInput("  ");
     cursorPos += 1;
   }
+  if (event.target.classList.contains("backspace")) {
+    if (cursorPos === 0) return;
+    textArea.value = textArea.value.slice(0, cursorPos - 1)
+    + textArea.value.slice(cursorPos, textArea.value.length);
+    cursorPos -= 1;
+  }
+  if (event.target.classList.contains("space")) {
+    textAreaInput(" ");
+  }
+  if (!event.target.classList.contains("not-common-btn")) {
+    event.path.find((item) => {
+      if (item instanceof Element) {
+        if (item.classList.contains("keyboard-btn")) {
+          textAreaInput(event.target.textContent);
+          return true;
+        }
+      }
+    });
+  }
+  if (!event.target.classList.contains("keyboard-btn")) return;
+  clickAction(event.target, "down");
 });
 
 keyboard.addEventListener("mouseup", (event) => {
