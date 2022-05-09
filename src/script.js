@@ -96,6 +96,7 @@ for (let i = 0; i < 14; i += 1) {
   keyboardBtn.className = "keyboard-btn";
   keyboardBtn.dataset.keyCode = englishKeys[i][1];
   if (englishKeys[i][0] === "Backspace") {
+    keyboardBtn.classList.add("not-common-btn");
     keyboardBtn.classList.add("backspace");
   }
   row1.append(keyboardBtn);
@@ -107,9 +108,11 @@ for (let i = 14; i < 29; i += 1) {
   keyboardBtn.className = "keyboard-btn";
   keyboardBtn.dataset.keyCode = englishKeys[i][1];
   if (englishKeys[i][0] === "Tab") {
+    keyboardBtn.classList.add("not-common-btn");
     keyboardBtn.classList.add("tab");
   }
   if (englishKeys[i][0] === "Del") {
+    keyboardBtn.classList.add("not-common-btn");
     keyboardBtn.classList.add("del");
   }
   row2.append(keyboardBtn);
@@ -121,9 +124,11 @@ for (let i = 29; i < 42; i += 1) {
   keyboardBtn.className = "keyboard-btn";
   keyboardBtn.dataset.keyCode = englishKeys[i][1];
   if (englishKeys[i][0] === "Caps Lock") {
+    keyboardBtn.classList.add("not-common-btn");
     keyboardBtn.classList.add("capslock");
   }
   if (englishKeys[i][0] === "Enter") {
+    keyboardBtn.classList.add("not-common-btn");
     keyboardBtn.classList.add("enter");
   }
   row3.append(keyboardBtn);
@@ -135,9 +140,11 @@ for (let i = 42; i < 55; i += 1) {
   keyboardBtn.className = "keyboard-btn";
   keyboardBtn.dataset.keyCode = englishKeys[i][1];
   if (englishKeys[i][0].trim() === "Shift") {
+    keyboardBtn.classList.add("not-common-btn");
     keyboardBtn.classList.add("shift");
   }
   if (englishKeys[i][0] === "Up arrow") {
+    keyboardBtn.classList.add("not-common-btn");
     keyboardBtn.classList.add("up-arrow");
   }
   row4.append(keyboardBtn);
@@ -151,18 +158,25 @@ for (let i = 55; i < 64; i += 1) {
   keyboardBtn.dataset.keyCode = englishKeys[i][1];
   switch (englishKeys[i][0].trim()) {
     case "Ctrl": keyboardBtn.classList.add("ctrl");
+      keyboardBtn.classList.add("not-common-btn");
       break;
     case "Win": keyboardBtn.classList.add("win");
+      keyboardBtn.classList.add("not-common-btn");
       break;
     case "Alt": keyboardBtn.classList.add("alt");
+      keyboardBtn.classList.add("not-common-btn");
       break;
     case "Space": keyboardBtn.classList.add("space");
+      keyboardBtn.classList.add("not-common-btn");
       break;
     case "Left arrow": keyboardBtn.classList.add("left-arrow");
+      keyboardBtn.classList.add("not-common-btn");
       break;
     case "Down arrow": keyboardBtn.classList.add("down-arrow");
+      keyboardBtn.classList.add("not-common-btn");
       break;
     case "Right arrow": keyboardBtn.classList.add("right-arrow");
+      keyboardBtn.classList.add("not-common-btn");
       break;
     default: keyboardBtn.classList.add("keyboard-btn");
   }
@@ -170,6 +184,8 @@ for (let i = 55; i < 64; i += 1) {
   keyboardBtn.textContent = `${englishKeys[i][0]}`;
 }
 let cursorPos = 0;
+let isCapsLock = false;
+
 const textAreaInput = (value) => {
   textArea.value = textArea.value.slice(0, cursorPos) + value
   + textArea.value.slice(cursorPos, textArea.value.length);
@@ -192,9 +208,35 @@ const clickAction = (event, action) => {
   textArea.focus();
 };
 const listButtons = Array.from(document.querySelectorAll("[data-key-code]"));
+
+const clickCapsLock = (_, action) => {
+  if (action === "down") {
+    listButtons.forEach((item) => {
+      if (item.classList.contains("keyboard-btn") && !item.classList.contains("not-common-btn")) {
+        item.textContent = item.textContent.toUpperCase();
+      }
+    });
+  }
+  if (action === "up") {
+    listButtons.forEach((item) => {
+      if (item.classList.contains("keyboard-btn") && !item.classList.contains("not-common-btn")) {
+        item.textContent = item.textContent.toLowerCase();
+      }
+    });
+  }
+};
+
 window.addEventListener("keydown", (event) => {
   event.preventDefault();
-  listButtons.find(el => {
+  if (event.key === "CapsLock") {
+    isCapsLock = !isCapsLock;
+    if (isCapsLock) {
+      clickCapsLock(event.target, "down");
+    } else {
+      clickCapsLock(event.target, "up");
+    }
+}
+  listButtons.find((el) => {
     if (+el.dataset.keyCode === event.keyCode) {
       clickAction(el, "down");
       inputText(el);
@@ -205,7 +247,7 @@ window.addEventListener("keydown", (event) => {
 
 window.addEventListener("keyup", (event) => {
   event.preventDefault();
-  listButtons.find(el => {
+  listButtons.find((el) => {
     if (+el.dataset.keyCode === event.keyCode) {
       clickAction(el, "up");
       return true;
@@ -214,7 +256,7 @@ window.addEventListener("keyup", (event) => {
 });
 
 keyboard.addEventListener("mousedown", (event) => {
-  event.path.find(item => {
+  event.path.find((item) => {
     if (item instanceof Element) {
       if (item.classList.contains("keyboard-btn")) {
         textAreaInput(event.target.textContent);
