@@ -183,9 +183,27 @@ for (let i = 55; i < 64; i += 1) {
   row5.append(keyboardBtn);
   keyboardBtn.textContent = `${englishKeys[i][0]}`;
 }
+let keyboardButtons = document.querySelectorAll(".keyboard-btn")
+for (let i = 0; i < keyboardButtons.length; i += 1) {
+  if (keyboardButtons[i].textContent.trim().split(" ").length === 2 && keyboardButtons[i].textContent !== "Caps Lock") {
+    const firstViewBtn = document.createElement("div");
+    firstViewBtn.className = "first-view-btn";
+    firstViewBtn.textContent = keyboardButtons[i].textContent.split(' ')[1];
+
+    const secondViewBtn = document.createElement("div");
+    secondViewBtn.className = "second-view-btn";
+    secondViewBtn.textContent = keyboardButtons[i].textContent.split(' ')[0];
+    keyboardButtons[i].textContent = ""
+
+    keyboardButtons[i].append(firstViewBtn)
+    keyboardButtons[i].append(secondViewBtn)
+    keyboardButtons[i].classList.add("double-view-btn");
+  }
+}
+
 let cursorPos = 0;
 let isCapsLock = false;
-let isShift = false
+let isShift = false;
 
 const textAreaInput = (value) => {
   textArea.value = textArea.value.slice(0, cursorPos) + value
