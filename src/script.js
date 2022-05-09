@@ -236,6 +236,14 @@ window.addEventListener("keydown", (event) => {
       clickCapsLock(event.target, "up");
     }
   }
+  if (event.key === "Enter") {
+    textAreaInput("\r\n");
+  }
+
+  if (event.key === "Tab") {
+    textAreaInput("  ");
+    cursorPos += 1;
+  }
   listButtons.find((el) => {
     if (+el.dataset.keyCode === event.keyCode) {
       clickAction(el, "down");
@@ -243,6 +251,7 @@ window.addEventListener("keydown", (event) => {
       return true;
     }
   })
+ 
 });
 
 window.addEventListener("keyup", (event) => {
@@ -275,7 +284,15 @@ keyboard.addEventListener("mousedown", (event) => {
     } else {
       clickCapsLock(event.target, "up");
     }
-}
+  }
+
+  if (event.target.classList.contains("enter")) {
+    textAreaInput("\r\n");
+  }
+  if (event.target.classList.contains("tab")) {
+    textAreaInput("  ");
+    cursorPos += 1;
+  }
 });
 
 keyboard.addEventListener("mouseup", (event) => {
