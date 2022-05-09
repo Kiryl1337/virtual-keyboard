@@ -324,6 +324,12 @@ window.addEventListener("keydown", (event) => {
     textAreaInput(" ");
   }
 
+  if (event.key === "Delete") {
+    if (cursorPos >= textArea.value.length) return;
+    textArea.value = textArea.value.slice(0, cursorPos)
+    + textArea.value.slice(cursorPos + 1, textArea.value.length);
+  }
+
   listButtons.find((el) => {
     if (+el.dataset.keyCode === event.keyCode) {
       clickAction(el, "down");
@@ -383,6 +389,11 @@ keyboard.addEventListener("mousedown", (event) => {
   }
   if (event.target.classList.contains("space")) {
     textAreaInput(" ");
+  }
+  if (event.target.classList.contains("del")) {
+    if (cursorPos >= textArea.value.length) return;
+    textArea.value = textArea.value.slice(0, cursorPos)
+    + textArea.value.slice(cursorPos + 1, textArea.value.length);
   }
   if (!event.target.classList.contains("not-common-btn")) {
     event.path.find((item) => {
