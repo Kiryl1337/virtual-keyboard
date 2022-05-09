@@ -205,6 +205,7 @@ for (let i = 0; i < keyboardButtons.length; i += 1) {
 let cursorPos = 0;
 let isCapsLock = false;
 let isShift = false;
+let isAlt = false;
 
 const textAreaInput = (value) => {
   textArea.value = textArea.value.slice(0, cursorPos) + value
@@ -330,6 +331,12 @@ window.addEventListener("keydown", (event) => {
     + textArea.value.slice(cursorPos + 1, textArea.value.length);
   }
 
+  if (event.key === "Alt") {
+    if (event.code === "AltLeft") {
+      isAlt = true;
+    }
+  }
+
   listButtons.find((el) => {
     if (+el.dataset.keyCode === event.keyCode) {
       clickAction(el, "down");
@@ -348,6 +355,10 @@ window.addEventListener("keyup", (event) => {
       clickShift(event.target, "down");
     }
     isShift = false;
+  }
+  if (event.key === "Alt") {
+    clickShift(event.target, "up");
+    isAlt = false;
   }
   listButtons.find((el) => {
     if (+el.dataset.keyCode === event.keyCode) {
@@ -395,6 +406,10 @@ keyboard.addEventListener("mousedown", (event) => {
     textArea.value = textArea.value.slice(0, cursorPos)
     + textArea.value.slice(cursorPos + 1, textArea.value.length);
   }
+
+  if (event.target.classList.contains("alt")) {
+    isAlt = true;
+  }
   if (!event.target.classList.contains("not-common-btn")) {
     event.path.find((item) => {
       if (item instanceof Element) {
@@ -425,7 +440,10 @@ keyboard.addEventListener("mouseup", (event) => {
       clickShift(event.target, "down");
     }
     isShift = false;
-}
+  }
+  if (event.target.classList.contains("alt")) {
+    isAlt = false;
+  }
   if (!event.target.classList.contains("keyboard-btn")) return;
   clickAction(event.target, "up");
 });
