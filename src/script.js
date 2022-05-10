@@ -93,6 +93,7 @@ const keys = {
     з: 80,
     х: 219,
     ъ: 221,
+    "\\ /": 220,
     Del: 46,
     "Caps Lock": 20,
     ф: 65,
@@ -129,7 +130,7 @@ const keys = {
     "↓": 40,
     "→": 39,
     "Ctrl ": 17,
-},
+  },
 };
 
 const textArea = document.createElement("textarea");
@@ -153,121 +154,126 @@ function createRow() {
   keyboardKeys.append(row);
   return row;
 }
-let lang;
-let currentLang = lang || "en";
+
+let currentLang = localStorage.getItem("lang") || "en";
 let keysLang = Object.entries(keys[currentLang]);
 
-const row1 = createRow();
-for (let i = 0; i < 14; i += 1) {
-  const keyboardBtn = document.createElement("div");
-  keyboardBtn.className = "keyboard-btn";
-  keyboardBtn.dataset.keyCode = keysLang[i][1];
-  if (keysLang[i][0] === "Backspace") {
-    keyboardBtn.classList.add("not-common-btn");
-    keyboardBtn.classList.add("backspace");
+function createKeyboard() {
+  keyboardKeys.innerHTML = "";
+  const row1 = createRow();
+  for (let i = 0; i < 14; i += 1) {
+    const keyboardBtn = document.createElement("div");
+    keyboardBtn.className = "keyboard-btn";
+    keyboardBtn.dataset.keyCode = keysLang[i][1];
+    if (keysLang[i][0] === "Backspace") {
+      keyboardBtn.classList.add("not-common-btn");
+      keyboardBtn.classList.add("backspace");
+    }
+    row1.append(keyboardBtn);
+    keyboardBtn.textContent = `${keysLang[i][0]}`;
   }
-  row1.append(keyboardBtn);
-  keyboardBtn.textContent = `${keysLang[i][0]}`;
-}
-const row2 = createRow();
-for (let i = 14; i < 29; i += 1) {
-  const keyboardBtn = document.createElement("div");
-  keyboardBtn.className = "keyboard-btn";
-  keyboardBtn.dataset.keyCode = keysLang[i][1];
-  if (keysLang[i][0] === "Tab") {
-    keyboardBtn.classList.add("not-common-btn");
-    keyboardBtn.classList.add("tab");
+  const row2 = createRow();
+  for (let i = 14; i < 29; i += 1) {
+    const keyboardBtn = document.createElement("div");
+    keyboardBtn.className = "keyboard-btn";
+    keyboardBtn.dataset.keyCode = keysLang[i][1];
+    if (keysLang[i][0] === "Tab") {
+      keyboardBtn.classList.add("not-common-btn");
+      keyboardBtn.classList.add("tab");
+    }
+    if (keysLang[i][0] === "Del") {
+      keyboardBtn.classList.add("not-common-btn");
+      keyboardBtn.classList.add("del");
+    }
+    row2.append(keyboardBtn);
+    keyboardBtn.textContent = `${keysLang[i][0]}`;
   }
-  if (keysLang[i][0] === "Del") {
-    keyboardBtn.classList.add("not-common-btn");
-    keyboardBtn.classList.add("del");
+  const row3 = createRow();
+  for (let i = 29; i < 42; i += 1) {
+    const keyboardBtn = document.createElement("div");
+    keyboardBtn.className = "keyboard-btn";
+    keyboardBtn.dataset.keyCode = keysLang[i][1];
+    if (keysLang[i][0] === "Caps Lock") {
+      keyboardBtn.classList.add("not-common-btn");
+      keyboardBtn.classList.add("capslock");
+    }
+    if (keysLang[i][0] === "Enter") {
+      keyboardBtn.classList.add("not-common-btn");
+      keyboardBtn.classList.add("enter");
+    }
+    row3.append(keyboardBtn);
+    keyboardBtn.textContent = `${keysLang[i][0]}`;
   }
-  row2.append(keyboardBtn);
-  keyboardBtn.textContent = `${keysLang[i][0]}`;
-}
-const row3 = createRow();
-for (let i = 29; i < 42; i += 1) {
-  const keyboardBtn = document.createElement("div");
-  keyboardBtn.className = "keyboard-btn";
-  keyboardBtn.dataset.keyCode = keysLang[i][1];
-  if (keysLang[i][0] === "Caps Lock") {
-    keyboardBtn.classList.add("not-common-btn");
-    keyboardBtn.classList.add("capslock");
+  const row4 = createRow();
+  for (let i = 42; i < 55; i += 1) {
+    const keyboardBtn = document.createElement("div");
+    keyboardBtn.className = "keyboard-btn";
+    keyboardBtn.dataset.keyCode = keysLang[i][1];
+    if (keysLang[i][0].trim() === "Shift") {
+      keyboardBtn.classList.add("not-common-btn");
+      keyboardBtn.classList.add("shift");
+    }
+    if (keysLang[i][0] === "↑") {
+      keyboardBtn.classList.add("not-common-btn");
+      keyboardBtn.classList.add("up-arrow");
+    }
+    row4.append(keyboardBtn);
+    keyboardBtn.textContent = `${keysLang[i][0]}`;
   }
-  if (keysLang[i][0] === "Enter") {
-    keyboardBtn.classList.add("not-common-btn");
-    keyboardBtn.classList.add("enter");
-  }
-  row3.append(keyboardBtn);
-  keyboardBtn.textContent = `${keysLang[i][0]}`;
-}
-const row4 = createRow();
-for (let i = 42; i < 55; i += 1) {
-  const keyboardBtn = document.createElement("div");
-  keyboardBtn.className = "keyboard-btn";
-  keyboardBtn.dataset.keyCode = keysLang[i][1];
-  if (keysLang[i][0].trim() === "Shift") {
-    keyboardBtn.classList.add("not-common-btn");
-    keyboardBtn.classList.add("shift");
-  }
-  if (keysLang[i][0] === "↑") {
-    keyboardBtn.classList.add("not-common-btn");
-    keyboardBtn.classList.add("up-arrow");
-  }
-  row4.append(keyboardBtn);
-  keyboardBtn.textContent = `${keysLang[i][0]}`;
-}
 
-const row5 = createRow();
-for (let i = 55; i < 64; i += 1) {
-  const keyboardBtn = document.createElement("div");
-  keyboardBtn.className = "keyboard-btn";
-  keyboardBtn.dataset.keyCode = keysLang[i][1];
-  switch (keysLang[i][0].trim()) {
-    case "Ctrl": keyboardBtn.classList.add("ctrl");
-      keyboardBtn.classList.add("not-common-btn");
-      break;
-    case "Win": keyboardBtn.classList.add("win");
-      keyboardBtn.classList.add("not-common-btn");
-      break;
-    case "Alt": keyboardBtn.classList.add("alt");
-      keyboardBtn.classList.add("not-common-btn");
-      break;
-    case "Space": keyboardBtn.classList.add("space");
-      keyboardBtn.classList.add("not-common-btn");
-      break;
-    case "←": keyboardBtn.classList.add("left-arrow");
-      keyboardBtn.classList.add("not-common-btn");
-      break;
-    case "↓": keyboardBtn.classList.add("down-arrow");
-      keyboardBtn.classList.add("not-common-btn");
-      break;
-    case "→": keyboardBtn.classList.add("right-arrow");
-      keyboardBtn.classList.add("not-common-btn");
-      break;
-    default: keyboardBtn.classList.add("keyboard-btn");
+  const row5 = createRow();
+  for (let i = 55; i < 64; i += 1) {
+    const keyboardBtn = document.createElement("div");
+    keyboardBtn.className = "keyboard-btn";
+    keyboardBtn.dataset.keyCode = keysLang[i][1];
+    switch (keysLang[i][0].trim()) {
+      case "Ctrl": keyboardBtn.classList.add("ctrl");
+        keyboardBtn.classList.add("not-common-btn");
+        break;
+      case "Win": keyboardBtn.classList.add("win");
+        keyboardBtn.classList.add("not-common-btn");
+        break;
+      case "Alt": keyboardBtn.classList.add("alt");
+        keyboardBtn.classList.add("not-common-btn");
+        break;
+      case "Space": keyboardBtn.classList.add("space");
+        keyboardBtn.classList.add("not-common-btn");
+        break;
+      case "←": keyboardBtn.classList.add("left-arrow");
+        keyboardBtn.classList.add("not-common-btn");
+        break;
+      case "↓": keyboardBtn.classList.add("down-arrow");
+        keyboardBtn.classList.add("not-common-btn");
+        break;
+      case "→": keyboardBtn.classList.add("right-arrow");
+        keyboardBtn.classList.add("not-common-btn");
+        break;
+      default: keyboardBtn.classList.add("keyboard-btn");
+    }
+    row5.append(keyboardBtn);
+    keyboardBtn.textContent = `${keysLang[i][0]}`;
   }
-  row5.append(keyboardBtn);
-  keyboardBtn.textContent = `${keysLang[i][0]}`;
-}
-let keyboardButtons = document.querySelectorAll(".keyboard-btn")
-for (let i = 0; i < keyboardButtons.length; i += 1) {
-  if (keyboardButtons[i].textContent.trim().split(" ").length === 2 && keyboardButtons[i].textContent !== "Caps Lock") {
-    const firstViewBtn = document.createElement("div");
-    firstViewBtn.className = "first-view-btn";
-    firstViewBtn.classList.add("hidden");
-    firstViewBtn.textContent = keyboardButtons[i].textContent.split(' ')[1];
 
-    const secondViewBtn = document.createElement("div");
-    secondViewBtn.className = "second-view-btn";
-    secondViewBtn.textContent = keyboardButtons[i].textContent.split(' ')[0];
-    keyboardButtons[i].textContent = ""
+  let keyboardButtons = document.querySelectorAll(".keyboard-btn")
+  for (let i = 0; i < keyboardButtons.length; i += 1) {
+    if (keyboardButtons[i].textContent.trim().split(" ").length === 2 && keyboardButtons[i].textContent !== "Caps Lock") {
+      const firstViewBtn = document.createElement("div");
+      firstViewBtn.className = "first-view-btn";
+      firstViewBtn.classList.add("hidden");
+      firstViewBtn.textContent = keyboardButtons[i].textContent.split(' ')[1];
 
-    keyboardButtons[i].append(firstViewBtn)
-    keyboardButtons[i].append(secondViewBtn)
-    keyboardButtons[i].classList.add("double-view-btn");
+      const secondViewBtn = document.createElement("div");
+      secondViewBtn.className = "second-view-btn";
+      secondViewBtn.textContent = keyboardButtons[i].textContent.split(' ')[0];
+      keyboardButtons[i].textContent = ""
+
+      keyboardButtons[i].append(firstViewBtn)
+      keyboardButtons[i].append(secondViewBtn)
+      keyboardButtons[i].classList.add("double-view-btn");
+    }
   }
 }
+createKeyboard(keysLang);
 
 let cursorPos = 0;
 let isCapsLock = false;
@@ -358,9 +364,11 @@ const changeLang = (side) => {
     if (currentLang === "en") {
       currentLang = "ru";
       keysLang = Object.entries(keys[currentLang]);
+      createKeyboard(keysLang);
     } else {
       currentLang = "en";
       keysLang = Object.entries(keys[currentLang]);
+      createKeyboard(keysLang);
     }
 
     listButtons.find(item => {
@@ -390,7 +398,7 @@ const changeLang = (side) => {
     });
   }
 
-  lang = currentLang;
+  localStorage.setItem("lang", currentLang);
 };
 
 window.addEventListener("keydown", (event) => {
@@ -447,6 +455,7 @@ window.addEventListener("keydown", (event) => {
   if (event.key === "Alt") {
     if (event.code === "AltLeft") {
       isAlt = true;
+      changeLang();
     }
   }
 
@@ -468,7 +477,7 @@ window.addEventListener("keydown", (event) => {
         return true;
       }
     });
-}
+  }
 });
 
 window.addEventListener("keyup", (event) => {
@@ -520,6 +529,7 @@ keyboard.addEventListener("mousedown", (event) => {
       clickShift(event.target, "up");
     }
     isShift = true;
+    changeLang();
   }
   if (event.target.classList.contains("enter")) {
     textAreaInput("\r\n");
@@ -545,6 +555,7 @@ keyboard.addEventListener("mousedown", (event) => {
 
   if (event.target.classList.contains("alt")) {
     isAlt = true;
+    changeLang();
   }
   if (!event.target.classList.contains("not-common-btn")) {
     event.path.find((item) => {
