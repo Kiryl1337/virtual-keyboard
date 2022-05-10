@@ -104,3 +104,8 @@ textarea {
     margin: 10px auto;
     text-align: center;
 }
+
+.not-common-btn, .left-arrow, .up-arrow, .down-arrow, .right-arrow {
+    font-weight: 600;
+    background-color: rgb(34, 34, 34);
+}

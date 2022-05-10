@@ -215,7 +215,6 @@ function createKeyboard() {
       keyboardBtn.classList.add("shift");
     }
     if (keysLang[i][0] === "↑") {
-      keyboardBtn.classList.add("not-common-btn");
       keyboardBtn.classList.add("up-arrow");
     }
     row4.append(keyboardBtn);
@@ -241,18 +240,19 @@ function createKeyboard() {
         keyboardBtn.classList.add("not-common-btn");
         break;
       case "←": keyboardBtn.classList.add("left-arrow");
-        keyboardBtn.classList.add("not-common-btn");
         break;
       case "↓": keyboardBtn.classList.add("down-arrow");
-        keyboardBtn.classList.add("not-common-btn");
         break;
       case "→": keyboardBtn.classList.add("right-arrow");
-        keyboardBtn.classList.add("not-common-btn");
         break;
       default: keyboardBtn.classList.add("keyboard-btn");
     }
     row5.append(keyboardBtn);
-    keyboardBtn.textContent = `${keysLang[i][0]}`;
+    if (keyboardBtn.classList.contains("space")) {
+      keyboardBtn.textContent = "";
+    } else {
+      keyboardBtn.textContent = `${keysLang[i][0]}`;
+    }
     listButtons = Array.from(document.querySelectorAll("[data-key-code]"));
   }
 
@@ -289,8 +289,7 @@ const textAreaInput = (value) => {
 };
 
 const inputText = (event) => {
-  if (event.classList.contains("not-common-btn") && !event.classList.contains("down-arrow")
-  && !event.classList.contains("left-arrow") && !event.classList.contains("right-arrow") && !event.classList.contains("up-arrow")) {
+  if (event.classList.contains("not-common-btn")) {
     return;
   }
   if (event.classList.contains("double-view-btn")) {
@@ -308,9 +307,17 @@ const inputText = (event) => {
 
 const clickAction = (event, action) => {
   if (action === "down") {
-    event.classList.add("active");
+    if (event.dataset.keyCode === "20" && event.classList.contains("active")) {
+      event.classList.remove("active");
+    } else {
+      event.classList.add("active");
+    }
   } else if (action === "up") {
-    event.classList.remove("active");
+    if (event.dataset.keyCode === "20" && event.classList.contains("active")) {
+      event.classList.add("active");
+    } else {
+      event.classList.remove("active");
+    }
   }
   textArea.selectionStart = cursorPos
   textArea.selectionEnd = textArea.selectionStart;
