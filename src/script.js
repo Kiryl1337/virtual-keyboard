@@ -282,6 +282,10 @@ let isCapsLock = false;
 let isShift = false;
 let isAlt = false;
 
+textArea.addEventListener("click", () => {
+  cursorPos = textArea.selectionStart
+})
+
 const textAreaInput = (value) => {
   textArea.value = textArea.value.slice(0, cursorPos) + value
   + textArea.value.slice(cursorPos, textArea.value.length);
